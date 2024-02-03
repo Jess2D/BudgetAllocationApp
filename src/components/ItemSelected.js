@@ -37,7 +37,7 @@ const ItemSelected = (props) => {
     return (
         <div>
             <div className='row'>
-                <div className="input-group mb-3">
+                <div className="input-group mb-3 col-sm">
                     <div className="input-group-prepend">
                         <label className="input-group-text" htmlFor="inputGroupSelect01">Department</label>
                     </div>
@@ -56,7 +56,7 @@ const ItemSelected = (props) => {
                     </select>
                 </div>
 
-                <div className="input-group mb-3">
+                <div className="input-group mb-3 col-sm">
                     <div className="input-group-prepend">
                         <label className="input-group-text" htmlFor="inputGroupSelect02">Action</label>
                     </div>
@@ -71,24 +71,25 @@ const ItemSelected = (props) => {
                     </select>
                 </div>
 
-                <div className="input-group mb-3">
+                <div className="input-group mb-3 col-sm">
                     <span className="input-group-text">{Currency}</span>
                     <input
                         type='number'
                         className="form-control"
                         value={unitbudget}
                         onChange={(e) => setUnitBudget(e.target.value)}
-                    />
+                    />                
+                    <button 
+                    className="btn btn-primary " 
+                    onClick={submitEvent} 
+                    style={{ height: '38px', padding:'5px', width:'120px', marginLeft: '12px'}}
+                    disabled={!isValidForm} 
+                     >
+                    Save
+                   </button>
                 </div>
 
-                <button 
-                    className="btn btn-primary" 
-                    onClick={submitEvent} 
-                   
-                    disabled={!isValidForm} 
-                >
-                    Save
-                </button>
+
             </div>
         </div>
     );

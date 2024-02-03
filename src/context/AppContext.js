@@ -28,6 +28,13 @@ export const AppReducer = (state, action) => {
                 ...state,
                 Currency: action.payload,
             };
+        
+        case 'ALLOCATED':
+            return {
+                ...state,
+                Allocated:action.payload,
+            }  ;
+
         default:
             return state;
     }
@@ -42,6 +49,7 @@ const initialState = {
         { id: "Sales", department: 'Sales', quantity: 0, unitbudget: 70 },
     ],
     Currency: '£',
+    Allocated: 2088,
 };
 
 export const AppContext = createContext();
@@ -53,13 +61,23 @@ export const AppProvider = (props) => {
         return total + item.unitbudget * item.quantity;
     }, 0);
 
+    const calculateSpendSoFar = () => {
+        return state.budgets.reduce((totalSpend, budget) => {
+            return totalSpend + (budget.quantity * budget.unitbudget);
+        }, 0);
+    };
+
+    const spentSoFar = calculateSpendSoFar();
+
     return (
         <AppContext.Provider
             value={{
                 budgets: state.budgets,
                 BudgetValue: totalbudgets,
+                spentSoFar,
                 dispatch,
                 Currency: state.Currency,
+                Allocated:state.Allocated,
             }}
         >
             {props.children}

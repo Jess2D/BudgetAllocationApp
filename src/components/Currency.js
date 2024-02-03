@@ -12,7 +12,7 @@ const Currency = () => {
     };
 
     return (
-        <div className='alert alert-secondary'>
+        <div className='alert alert-success'>
             Currency{' '}
             <select
                 name='Currency'

@@ -16,8 +16,8 @@ const App = () => {
                 <div className='row mt-3'>
                     <div className='col-sm'>
                         <BudgetAllocation/>
-                        <BudgetValue />
                         <BudgetRemaining/>
+                        <BudgetValue />
                         <Currency />
                     </div>
                 </div>

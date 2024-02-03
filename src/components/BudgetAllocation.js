@@ -1,12 +1,25 @@
+// BudgetAllocation.js
+
 import React, { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 
-const BudgetAllocation = () => {    
+const BudgetAllocation = () => {
+    const { Allocated, Currency, updateTotalBudget } = useContext(AppContext);
 
-    const { Allocated, Currency, BudgetValue} = useContext(AppContext);
+    const handleBudgetChange = (event) => {
+        const newAllocated = parseFloat(event.target.value) || 0;
+        updateTotalBudget(newAllocated);
+    };
+
     return (
-        <div className='alert alert-success'>
-            <span>Budget: {Currency}{Allocated}</span>
+        <div className='alert alert-secondary'>
+            {Currency}
+            <input 
+                type="number" 
+                value={Allocated} 
+                onChange={handleBudgetChange}
+                style={{ width: '100px' }} 
+            />
         </div>
     );
 };

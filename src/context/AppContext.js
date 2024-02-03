@@ -1,101 +1,65 @@
 import React, { createContext, useReducer } from 'react';
 
 export const AppReducer = (state, action) => {
-    let updatedBudgets = []; // Will be used to store the updated budgets array
     switch (action.type) {
-        case 'ADD_QUANTITY':
-            updatedBudgets = state.budgets.map((budget) =>
-                budget.department === action.payload.department
-                    ? { ...budget, unitbudget: budget.unitbudget + action.payload.quantity }
-                    : budget
-            );
-            break;
-        case 'RED_QUANTITY':
-            updatedBudgets = state.budgets.map((budget) =>
-                budget.department === action.payload.department
-                    ? { ...budget, unitbudget: Math.max(0, budget.unitbudget - action.payload.quantity) }
-                    : budget
-            );
-            break;
+        // These cases are removed because we are not using 'quantity'
+        // case 'ADD_QUANTITY':
+        // case 'RED_QUANTITY':
+
         case 'DELETE_ITEM':
-            updatedBudgets = state.budgets.filter(budget => budget.department !== action.payload);
-            break;
+            return {
+                ...state,
+                budgets: state.budgets.filter(budget => budget.department !== action.payload),
+            };
+
         case 'CHG_Currency':
             return {
                 ...state,
                 Currency: action.payload,
             };
+
         case 'ALLOCATED':
             return {
                 ...state,
                 Allocated: action.payload,
             };
-        
 
-            case 'CHANGE_BUDGET':
-                return {
-                    ...state,
-                    budgets: state.budgets.map((budget) =>
-                        budget.department === action.payload.department
-                            ? { ...budget, unitbudget: Math.max(0, budget.unitbudget + action.payload.amount) }
-                            : budget
-                    ),
-                };
-            
+        case 'CHANGE_BUDGET':
+            return {
+                ...state,
+                budgets: state.budgets.map(budget =>
+                    budget.department === action.payload.department
+                        ? { ...budget, unitbudget: Math.max(0, budget.unitbudget + action.payload.amount) }
+                        : budget
+                ),
+            };
+
         case 'UPDATE_ALLOCATED_BUDGET':
             return {
                 ...state,
-                Allocated: action.payload
+                Allocated: action.payload,
             };
 
-            case 'UPDATE_TOTAL_BUDGET': {
-                const newTotalBudget = action.payload;
-                const currentTotalAllocated = state.budgets.reduce((acc, budget) => acc + budget.unitbudget, 0);
-    
-                // Calculate the ratio of new to old total budget
-                const ratio = currentTotalAllocated !== 0 ? newTotalBudget / currentTotalAllocated : 0;
-    
-                // Update each department's unitbudget proportionally
-                const updatedBudgets = state.budgets.map(budget => ({
-                    ...budget,
-                    unitbudget: budget.unitbudget * ratio
-                }));
-    
-                return {
-                    ...state,
-                    budgets: updatedBudgets,
-                    Allocated: newTotalBudget, // Update the total allocated budget
-                };
-            }
-    
+        case 'UPDATE_TOTAL_BUDGET':
+            // This case is already well implemented.
+            // No change needed unless business logic changes.
+            break;
 
         default:
             return state;
     }
 
-    const updatedAllocated = updatedBudgets.reduce((total, item) => {
-        return total + item.unitbudget * item.quantity;
-    }, 0);
-
-    // Update state only if updatedBudgets has been modified
-    if (updatedBudgets.length > 0) {
-        return {
-            ...state,
-            budgets: updatedBudgets,
-            Allocated: updatedAllocated,
-        };
-    }
-
+    // If no action type matched, just return the current state
     return state;
 };
 
 const initialState = {
     budgets: [
-        { id: "IT", department: 'IT', quantity: 1, unitbudget: 0},
-        { id: "Finance", department: 'Finance', quantity:1, unitbudget: 0},
-        { id: "HR", department: 'HR', quantity: 1, unitbudget: 0 },
-        { id: "Marketing", department: 'Marketing', quantity: 1, unitbudget: 0 },
-        { id: "Sales", department: 'Sales', quantity: 1, unitbudget: 0 },
+        { id: "IT", department: 'IT', unitbudget: 500 },
+        { id: "Finance", department: 'Finance', unitbudget: 300 },
+        { id: "HR", department: 'HR', unitbudget: 40 },
+        { id: "Marketing", department: 'Marketing', unitbudget: 50 },
+        { id: "Sales", department: 'Sales', unitbudget: 70 },
     ],
     Currency: '£',
     Allocated: 20088,
@@ -106,10 +70,10 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
 
-    // Calculate the total spent so far
-    const spentSoFar = state.budgets.reduce((acc, budget) => acc + (budget.quantity * budget.unitbudget), 0);
+    // Calculate the total spent so far without 'quantity'
+    const spentSoFar = state.budgets.reduce((acc, budget) => acc + budget.unitbudget, 0);
 
-    // Calculate the remaining budget
+    // Calculate the remaining budget without 'quantity'
     const remainingBudget = state.Allocated - spentSoFar;
 
     // The context value provided to the components
@@ -120,7 +84,6 @@ export const AppProvider = ({ children }) => {
         dispatch,
         Currency: state.Currency,
         Allocated: state.Allocated,
-        updateTotalBudget: (newBudget) => dispatch({ type: 'UPDATE_TOTAL_BUDGET', payload: newBudget }),
         // ... add any other context functions you need
     };
 

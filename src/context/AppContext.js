@@ -66,14 +66,14 @@ export const AppReducer = (state, action) => {
 
 const initialState = {
     budgets: [
-        { id: "IT", department: 'IT', unitbudget: 0 },
-        { id: "Finance", department: 'Finance', unitbudget: 0 },
-        { id: "HR", department: 'HR', unitbudget: 0 },
-        { id: "Marketing", department: 'Marketing', unitbudget: 0 },
-        { id: "Sales", department: 'Sales', unitbudget: 0 },
+        { id: "IT", department: 'IT', unitbudget: 500 },
+        { id: "Finance", department: 'Finance', unitbudget: 300 },
+        { id: "HR", department: 'HR', unitbudget: 40 },
+        { id: "Marketing", department: 'Marketing', unitbudget: 50 },
+        { id: "Sales", department: 'Sales', unitbudget: 70 },
     ],
     Currency: '£',
-    Allocated: 20088,
+    Allocated: 2000,
 };
 
 export const AppContext = createContext();

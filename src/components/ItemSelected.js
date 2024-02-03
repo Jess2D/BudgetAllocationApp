@@ -2,12 +2,11 @@ import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 
 const ItemSelected = (props) => {
-    const { dispatch, Currency } = useContext(AppContext);
+    const { dispatch, Currency, remainingBudget } = useContext(AppContext); // Assume remainingBudget is available
 
     const [department, setDepartment] = useState('');
     const [unitbudget, setUnitBudget] = useState('');
     const [action, setAction] = useState('Add');
-
 
     const isValidForm = department && unitbudget && !isNaN(unitbudget) && parseInt(unitbudget) !== 0;
 
@@ -16,8 +15,14 @@ const ItemSelected = (props) => {
             alert("Please fill in all fields correctly.");
             return;
         }
-        
+
         const amount = action === "Reduce" ? -Math.abs(parseInt(unitbudget)) : Math.abs(parseInt(unitbudget));
+
+        // Validate against remaining budget for addition actions
+        if (action === "Add" && amount > remainingBudget) {
+            alert(`The amount exceeds the remaining budget of ${Currency}${remainingBudget}.`);
+            return;
+        }
 
         dispatch({
             type: 'CHANGE_BUDGET',
@@ -27,12 +32,12 @@ const ItemSelected = (props) => {
             },
         });
 
-        
         setDepartment('');
         setUnitBudget('');
         setAction('Add');
         alert("Budget updated successfully."); 
     };
+
 
     return (
         <div>

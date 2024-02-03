@@ -6,7 +6,7 @@ const BudgetRemaining = () => {
 
   
     return (
-        <div className='alert alert-success'>
+        <div className='alert alert-success' style={{  padding: '20px', height:'74px'}}>
             <span>Remaining: {Currency}{remainingBudget}</span>
         </div>
     );

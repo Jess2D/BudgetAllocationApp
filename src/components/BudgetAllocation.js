@@ -13,8 +13,8 @@ const BudgetAllocation = () => {
     
 
     return (
-        <div className='alert alert-secondary'>
-            {Currency}
+        <div className='alert alert-secondary' style={{  padding: '20px', height:'74px'}}>
+            Budget: {Currency}
             <input 
                 type="number" 
                 value={Allocated} 

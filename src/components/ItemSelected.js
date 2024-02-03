@@ -37,7 +37,7 @@ const ItemSelected = (props) => {
     return (
         <div>
             <div className='row'>
-                <div className="input-group mb-3" style={{ marginLeft: '2rem' }}>
+                <div className="input-group mb-3">
                     <div className="input-group-prepend">
                         <label className="input-group-text" htmlFor="inputGroupSelect01">Department</label>
                     </div>
@@ -56,7 +56,7 @@ const ItemSelected = (props) => {
                     </select>
                 </div>
 
-                <div className="input-group mb-3" style={{ marginLeft: '2rem' }}>
+                <div className="input-group mb-3">
                     <div className="input-group-prepend">
                         <label className="input-group-text" htmlFor="inputGroupSelect02">Action</label>
                     </div>
@@ -71,7 +71,7 @@ const ItemSelected = (props) => {
                     </select>
                 </div>
 
-                <div className="input-group mb-3" style={{ marginLeft: '2rem' }}>
+                <div className="input-group mb-3">
                     <span className="input-group-text">{Currency}</span>
                     <input
                         type='number'
@@ -84,7 +84,7 @@ const ItemSelected = (props) => {
                 <button 
                     className="btn btn-primary" 
                     onClick={submitEvent} 
-                    style={{ marginLeft: '2rem' }}
+                   
                     disabled={!isValidForm} 
                 >
                     Save

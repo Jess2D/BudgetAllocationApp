@@ -6,7 +6,7 @@ const BudgetValue = () => {
 
 
     return (
-        <div className='alert alert-primary'>
+        <div className='alert alert-primary' style={{  padding: '20px', height:'74px' }}>
             <span>Spent so far: {Currency}{spentSoFar}</span>
         </div>
     );

@@ -31,6 +31,11 @@
     --bs-btn-bg: #badbcc!important;
 }
 
+option {
+  background-color: green;
+  color: white; 
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -8,8 +8,9 @@ const BudgetAllocation = () => {
 
     const handleBudgetChange = (event) => {
         const newAllocated = parseFloat(event.target.value) || 0;
-        updateTotalBudget(newAllocated);
+        updateTotalBudget(newAllocated); // Esta é a função passada através do contexto
     };
+    
 
     return (
         <div className='alert alert-secondary'>

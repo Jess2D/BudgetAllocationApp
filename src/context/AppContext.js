@@ -2,10 +2,6 @@ import React, { createContext, useReducer } from 'react';
 
 export const AppReducer = (state, action) => {
     switch (action.type) {
-        // These cases are removed because we are not using 'quantity'
-        // case 'ADD_QUANTITY':
-        // case 'RED_QUANTITY':
-
         case 'DELETE_ITEM':
             return {
                 ...state,
@@ -39,11 +35,26 @@ export const AppReducer = (state, action) => {
                 ...state,
                 Allocated: action.payload,
             };
-
-        case 'UPDATE_TOTAL_BUDGET':
-            // This case is already well implemented.
-            // No change needed unless business logic changes.
-            break;
+            case 'UPDATE_TOTAL_BUDGET': {
+                const newTotalBudget = action.payload;
+                const currentTotalBudget = state.budgets.reduce((total, budget) => total + budget.unitbudget, 0);
+            
+           
+                const ratio = currentTotalBudget > 0 ? newTotalBudget / currentTotalBudget : 0;
+            
+                const updatedBudgets = state.budgets.map(budget => ({
+                    ...budget,
+                    
+                    unitbudget: budget.unitbudget * ratio,
+                }));
+            
+                return {
+                    ...state,
+                    budgets: updatedBudgets,
+                    Allocated: newTotalBudget, 
+                };
+            }
+            
 
         default:
             return state;
@@ -55,11 +66,11 @@ export const AppReducer = (state, action) => {
 
 const initialState = {
     budgets: [
-        { id: "IT", department: 'IT', unitbudget: 500 },
-        { id: "Finance", department: 'Finance', unitbudget: 300 },
-        { id: "HR", department: 'HR', unitbudget: 40 },
-        { id: "Marketing", department: 'Marketing', unitbudget: 50 },
-        { id: "Sales", department: 'Sales', unitbudget: 70 },
+        { id: "IT", department: 'IT', unitbudget: 0 },
+        { id: "Finance", department: 'Finance', unitbudget: 0 },
+        { id: "HR", department: 'HR', unitbudget: 0 },
+        { id: "Marketing", department: 'Marketing', unitbudget: 0 },
+        { id: "Sales", department: 'Sales', unitbudget: 0 },
     ],
     Currency: '£',
     Allocated: 20088,
@@ -76,15 +87,15 @@ export const AppProvider = ({ children }) => {
     // Calculate the remaining budget without 'quantity'
     const remainingBudget = state.Allocated - spentSoFar;
 
-    // The context value provided to the components
+
     const contextValue = {
         budgets: state.budgets,
         spentSoFar,
         remainingBudget,
+        updateTotalBudget: (newBudget) => dispatch({ type: 'UPDATE_ALLOCATED_BUDGET', payload: newBudget }),
         dispatch,
         Currency: state.Currency,
         Allocated: state.Allocated,
-        // ... add any other context functions you need
     };
 
     return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;
